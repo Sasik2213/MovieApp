@@ -6,8 +6,7 @@
       <class name="tests.Index">
         <methods>
           <include name="start"/>
-          <include name="end"/>
-          <include name="loginPageFunctions"/>
+          <include name="homePageTest"/>
         </methods>
       </class> <!-- tests.Index -->
     </classes>

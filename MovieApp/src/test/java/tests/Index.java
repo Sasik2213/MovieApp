@@ -1,5 +1,7 @@
 package tests;
 import java.time.Duration;
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,6 +14,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import pages.HomePage;
 import pages.LoginPage;
 
 public class Index {
@@ -31,6 +34,7 @@ public class Index {
 
 	public WebDriver driver;
 	public LoginPage loginPage;
+	public HomePage homePage;
 
 	@BeforeTest
 	public void start() {
@@ -68,5 +72,23 @@ public class Index {
 		checkErrorMessageOccured(driver.findElement(By.xpath("//p[@class='error-message']")));
 		loginPage.loginEntries("rahul","rahul@2021");
 		wait.until(ExpectedConditions.elementToBeClickable(loginPage.loginBtn)).click();
+	}
+	
+	@Test
+	public void homePageTest() throws Exception {
+		loginPage = new LoginPage(driver);
+		homePage = new HomePage(driver);
+		loginPage.loginEntries("rahul","rahul@2021");
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3000));
+		wait.until(ExpectedConditions.elementToBeClickable(loginPage.loginBtn)).click();
+		homePage.checkElementHead(homePage.homeBtn);
+		homePage.checkAnyElementFindOrNot(driver.findElement(By.xpath("//h1[normalize-space()='Trending Now']")));
+		List<WebElement> details = driver.findElements(By.xpath("//div[@class='home-movie-details-container']"));
+		for (WebElement webElement : details) {
+			System.out.println(webElement.getText());
+		}
+		homePage.checkAnyElementFindOrNot(driver.findElement(By.xpath("//div[@class='home-movie-details-container']")));
+		homePage.isElementDisplayed(homePage.playBtn);
+		homePage.isElementDisplayed(homePage.contactUs);
 	}
 }
